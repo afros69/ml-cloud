@@ -1,4 +1,4 @@
-detection_model_path = "detection_model.pt"  # "yolov8-n-31.05.24.pt"
+detection_model_path = "detection_model.pt"  # "yolov8-n-31.05.24.pt" "detection_model.pt"
 color_model_path = "efficientnet_b3_0_992.pth"
 
 color_map = {

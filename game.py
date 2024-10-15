@@ -5,7 +5,7 @@ import cv2
 import torch
 from ultralytics import YOLO
 from colors_ml import device, data_transforms_val, padding, best_model_wts
-from consts import number_map, detection_model_path
+from consts import number_map, detection_model_path, color_map
 
 
 class Game:
@@ -24,6 +24,7 @@ class Game:
 
     def load_model(self):
         self.detection = YOLO(detection_model_path)
+        print("model loaded")
 
     def reset(self):
         self.color_cache = {}
@@ -39,7 +40,7 @@ class Game:
         with torch.no_grad():
             y_pred = best_model_wts(crop)
             predicted = torch.argmax(y_pred, axis=1)
-            color = self.color_cache.get(predicted.item(), "?")
+            color = color_map.get(predicted.item(), "?")
         return color
 
     def handle_frame(self, frame):
@@ -53,6 +54,9 @@ class Game:
 
         result = results[0]
         boxes = result.boxes
+        if len(result.boxes) == 0:
+            return None
+
         names = result.names
         ids = result.boxes.id
         img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
