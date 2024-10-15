@@ -1,6 +1,9 @@
+from time import sleep
+
 from fastapi import FastAPI, UploadFile, File
 import cv2
 import numpy as np
+
 from game import Game
 
 games: dict[str, Game] = {}
@@ -23,6 +26,9 @@ async def upload_frame(game_sid: str, store_frames: bool = False, frame: UploadF
 
     img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
+    if game.store_frames:
+        game.frames.append(img)
+
     return game.handle_frame(img)
 
 
@@ -42,12 +48,12 @@ async def show_frames(game_sid: str):
             number = box["number"]
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
             cv2.putText(frame, f"{color} - {number}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
+        cv2.imwrite(f"{game.game_sid}.jpg", frame)
         cv2.imshow("Frames", frame)
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
     cv2.destroyAllWindows()
-
     return {"message": f"Displayed {len(frames)} frames"}
 
 

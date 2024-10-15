@@ -44,8 +44,6 @@ class Game:
         return color
 
     def handle_frame(self, frame):
-        if self.store_frames:
-            self.frames.append(frame)
         results = self.detection.track(frame, classes=[0], persist=True)
         if len(results) == 0:
             return None
@@ -65,23 +63,24 @@ class Game:
             x1, y1, x2, y2 = box[:4].int().tolist()
             x, y, w, h = alt_box[:4].int().tolist()
             stored = id in self.color_cache
+            color = self.color_cache.get(id, "?")
             if names[int(cls)] == 'ball' and not stored:
                 color = self.predict_color(img, x1, y1, x2, y2)
-                if color.endswith("_str"):
-                    self.color_cache[id] = color
-                box_number += 1
-                result_boxes.append({
-                    "x1": x1,
-                    "y1": y1,
-                    "x2": x2,
-                    "y2": y2,
-                    "x": x,
-                    "y": y,
-                    "w": w,
-                    "h": h,
-                    "color": color,
-                    "number": number_map.get(color, 0)
-                })
+            if color.endswith("_str"):
+                self.color_cache[id] = color
+            box_number += 1
+            result_boxes.append({
+                "x1": x1,
+                "y1": y1,
+                "x2": x2,
+                "y2": y2,
+                "x": x,
+                "y": y,
+                "w": w,
+                "h": h,
+                "color": color,
+                "number": number_map.get(color, 0)
+            })
 
         return result_boxes
 
