@@ -6,6 +6,7 @@ import torch
 from ultralytics import YOLO
 from colors_ml import device, data_transforms_val, padding, best_model_wts
 from consts import number_map, detection_model_path, color_map
+import supervision as sv
 
 
 class Game:
@@ -44,7 +45,8 @@ class Game:
         return color
 
     def handle_frame(self, frame):
-        results = self.detection.track(frame, classes=[0], persist=True)
+        results = self.detection.track(frame, classes=[0], persist=True, conf=0.6)
+        # detections = sv.Detections.from_ultralytics(results).with_nms(threshold=0.5, class_agnostic=False)
         if len(results) == 0:
             return None
 
