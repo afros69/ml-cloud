@@ -65,8 +65,14 @@ class Game:
         return color
 
     def handle_frame(self, frame):
-        self.detection.track(frame, classes=[0], persist=True, conf=0.6)
-        results = self.detection.track(frame, classes=[0], persist=True, conf=0.6)
+        track_options = {
+            "classes": [0],
+            "persist": True,
+            "conf": 0.6,
+            "verbose": False
+        }
+        self.detection.track(frame, **track_options)
+        results = self.detection.track(frame, **track_options)
         # detections = sv.Detections.from_ultralytics(results).with_nms(threshold=0.5, class_agnostic=False)
         if len(results) == 0:
             return None
