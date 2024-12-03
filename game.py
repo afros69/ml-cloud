@@ -8,7 +8,6 @@ import torch
 from ultralytics import YOLO
 from colors_ml import device, data_transforms_val, padding, best_model_wts
 from consts import number_map, detection_model_path, color_map
-import supervision as sv
 
 
 class Game:

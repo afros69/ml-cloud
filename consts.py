@@ -1,4 +1,4 @@
-detection_model_path = "detection_model.pt"  # "yolov8-n-31.05.24.pt" "detection_model.pt"
+detection_model_path = "upgrade_detection.pt"  # "yolov8-n-31.05.24.pt" "detection_model.pt"
 color_model_path = "efficientnet_b3_0_992.pth"
 
 color_map = {
@@ -24,7 +24,7 @@ number_map = {
     'yellow': 1,
     'blue_str': 10,
     'red_str': 11,
-    'pink_str': 21,
+    'pink_str': 12,
     'orange_str': 13,
     'green_str': 14,
     'brown_str': 15,
